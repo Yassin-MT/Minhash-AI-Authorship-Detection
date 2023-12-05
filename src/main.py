@@ -1,4 +1,9 @@
 from datasketch import MinHash
+from simhash import Simhash
+
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 def compute_minhash(text, num_perm=128, n=3):
     minhash = MinHash(num_perm=num_perm)
@@ -29,8 +34,9 @@ def average_jaccard_similarity(minhash_list):
         average_similarity = sum(pairwise_similarities) / len(pairwise_similarities)
         return average_similarity
     else:
-        return 0.0 
-    
+        return 0.0
+
+
 
 def read_lines_from_txt(file_path):
     lines = []
@@ -197,6 +203,23 @@ def ngram(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts):
 
 
 
+# def plot_results(threshold, ai_abstracts, non_ai_abstracts, is_ai_generated):
+#     x_values = range(len(ai_abstracts) + len(non_ai_abstracts))
+#     y_values = [threshold] * len(x_values)
+
+#     plt.plot(x_values, y_values, 'r--', label='Threshold')
+
+#     colors = ['green' if generated else 'red' for generated in is_ai_generated]
+
+#     plt.scatter(x_values, [threshold] * len(x_values), c=colors, label='Abstracts')
+
+#     plt.xlabel('Abstracts')
+#     plt.ylabel('Jaccard Similarity')
+#     plt.title('Jaccard Similarity Comparison')
+#     plt.legend()
+#     plt.show()
+
+
 def main():
     ai_generated_train_file = "ai_generated_abstracts_train.txt"
 
@@ -209,10 +232,12 @@ def main():
     ai_abstracts_test = read_lines_from_txt(ai_generated_test_file)
     non_ai_abstracts = read_lines_from_txt(non_ai_generated_file)
 
-    # ngram(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts)
-    kshingle(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts)
-
+    ngram(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts)
+    # kshingle(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts)
    
+
+
+
 
 
 if __name__ == "__main__":
