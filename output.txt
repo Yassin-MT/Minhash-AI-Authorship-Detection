@@ -385,3 +385,6 @@ Results for t=26.98998766272441
 Fraction of non-AI abstracts correctly flagged: 0.7349857006673022
 Fraction of AI abstracts correctly flagged: 0.5142857142857142
 Accuracy: 0.6246357074765082
+
+
+-----------------------------------------------------------------------

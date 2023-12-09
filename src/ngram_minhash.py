@@ -106,7 +106,6 @@ def plot_scatter(y_values, y_threshold, n, accuracy, save_path=None):
     plt.close()
     
 
-
 def plot_line_graph(x_values, y_values, n_gram_values, save_path=None):
     plt.figure(figsize=(10, 6))  
 
@@ -125,7 +124,6 @@ def plot_line_graph(x_values, y_values, n_gram_values, save_path=None):
         plt.savefig(save_path)
 
     plt.close()
-
 
 
 def ngram(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts):
