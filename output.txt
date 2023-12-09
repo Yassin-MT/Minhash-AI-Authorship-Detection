@@ -3,24 +3,20 @@ Fraction of non-AI abstracts correctly flagged: 1.0
 Fraction of AI abstracts correctly flagged: 0.5023809523809524
 Accuracy: 0.7511904761904762
 
-
 Results for n=4, p=0.95, t=0.14231861124996456, p*t=0.13520268068746633
 Fraction of non-AI abstracts correctly flagged: 1.0
 Fraction of AI abstracts correctly flagged: 0.6642857142857143
 Accuracy: 0.8321428571428571
-
 
 Results for n=4, p=0.9, t=0.14231861124996456, p*t=0.12808675012496812
 Fraction of non-AI abstracts correctly flagged: 0.996186844613918
 Fraction of AI abstracts correctly flagged: 0.780952380952381
 Accuracy: 0.8885696127831495
 
-
 Results for n=4, p=0.85, t=0.14231861124996456, p*t=0.12097081956246987
 Fraction of non-AI abstracts correctly flagged: 0.9914204003813155
 Fraction of AI abstracts correctly flagged: 0.8666666666666667
 Accuracy: 0.929043533523991
-
 
 Results for n=4, p=0.8, t=0.14231861124996456, p*t=0.11385488899997165
 Fraction of non-AI abstracts correctly flagged: 0.9775977121067684
