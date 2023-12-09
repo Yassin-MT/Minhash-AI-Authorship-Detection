@@ -62,7 +62,7 @@ def plot_scatter(y_values, y_threshold, accuracy, save_path=None):
     plt.text(0.95, 0.95, f'Accuracy: {accuracy:.4f}', transform=plt.gca().transAxes, fontsize=8, verticalalignment='top', horizontalalignment='right')
 
     plt.xlabel('Abstract')
-    plt.ylabel('Jaccard Similarity')
+    plt.ylabel('Hamming Distance')
     plt.title(f'Scatter Plot for SimHash')
 
     # Place the legend outside the actual graph on the top right

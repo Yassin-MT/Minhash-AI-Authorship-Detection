@@ -114,7 +114,7 @@ def p_stable_minhash(ai_training_list, ai_testing_list, non_ai_testing_list, k, 
         print(f"Accuracy: {accuracy}")
         print("\n")
 
-        plot_scatter(y_values, threshold, 4, accuracy, f'ngram/{4}_gram_tokens_{threshold_percentage}_threshold.png')
+        plot_scatter(y_values, threshold, 4, accuracy, f'pstable/{4}_gram_tokens_{threshold_percentage}_threshold.png')
         
 def plot_scatter(y_values, y_threshold, n, accuracy, save_path=None):
     x_count = len(y_values)
@@ -134,7 +134,7 @@ def plot_scatter(y_values, y_threshold, n, accuracy, save_path=None):
 
     plt.xlabel('Abstract')
     plt.ylabel('Jaccard Similarity')
-    plt.title(f'Scatter Plot for {n}-gram Minhash')
+    plt.title(f'Scatter Plot for {n}-gram p-stable Hashing')
 
     # Place the legend outside the actual graph on the top right
     plt.legend(handles=[

@@ -388,3 +388,44 @@ Accuracy: 0.6246357074765082
 
 
 -----------------------------------------------------------------------
+
+Results for n=4, p=1, t=0.08292796910430843, p*t=0.08292796910430843
+Fraction of non-AI abstracts correctly flagged: 1.0
+Fraction of AI abstracts correctly flagged: 0.5214285714285715
+Accuracy: 0.7607142857142857
+
+
+Results for n=4, p=0.95, t=0.08292796910430843, p*t=0.078781570649093
+Fraction of non-AI abstracts correctly flagged: 1.0
+Fraction of AI abstracts correctly flagged: 0.6095238095238096
+Accuracy: 0.8047619047619048
+
+
+Results for n=4, p=0.9, t=0.08292796910430843, p*t=0.07463517219387758
+Fraction of non-AI abstracts correctly flagged: 0.9990467111534795
+Fraction of AI abstracts correctly flagged: 0.7
+Accuracy: 0.8495233555767397
+
+
+Results for n=4, p=0.85, t=0.08292796910430843, p*t=0.07048877373866216
+Fraction of non-AI abstracts correctly flagged: 0.9971401334604385
+Fraction of AI abstracts correctly flagged: 0.7738095238095238
+Accuracy: 0.8854748286349812
+
+
+Results for n=4, p=0.8, t=0.08292796910430843, p*t=0.06634237528344675
+Fraction of non-AI abstracts correctly flagged: 0.996186844613918
+Fraction of AI abstracts correctly flagged: 0.8333333333333334
+Accuracy: 0.9147600889736257
+
+
+Results for n=4, p=0.75, t=0.08292796910430843, p*t=0.06219597682823132
+Fraction of non-AI abstracts correctly flagged: 0.9914204003813155
+Fraction of AI abstracts correctly flagged: 0.8690476190476191
+Accuracy: 0.9302340097144672
+
+
+Results for n=4, p=0.7, t=0.08292796910430843, p*t=0.05804957837301589
+Fraction of non-AI abstracts correctly flagged: 0.9766444232602478
+Fraction of AI abstracts correctly flagged: 0.930952380952381
+Accuracy: 0.9537984021063144
