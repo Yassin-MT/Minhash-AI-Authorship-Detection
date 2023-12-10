@@ -1,19 +1,48 @@
+
 from datasketch import MinHash
 import matplotlib.pyplot as plt
 import random
+
+from transformers import BertTokenizer
+
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+
+# # Load the BERT tokenizer
+# tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+
+# # Tokenize text
+# text = "Hugging Face transformers library is awesome!"
+# tokens = tokenizer.tokenize(tokenizer.decode(tokenizer.encode(text)))
+# print("Tokens:", tokens)
+
+# # Convert tokens to IDs
+# input_ids = tokenizer.encode(text, add_special_tokens=True)
+# print("Input IDs:", input_ids)
+
+# # Decode IDs back to text
+# decoded_text = tokenizer.decode(input_ids)
+# print("Decoded Text:", decoded_text)
 
 
 def calculate_jaccard_similarity(minhash1, minhash2):
     # Compute the Jaccard similarity between two MinHash objects
     return minhash1.jaccard(minhash2)
 
+def calculate_cosine_similarity(minhash_A, minhash_B):
+    # Estimate Jaccard similarity using MinHash signatures
+    jaccard_similarity = minhash_A.jaccard(minhash_B)
+
+    # Convert Jaccard similarity to approximate cosine similarity
+    cosine_similarity = jaccard_similarity / (minhash_A.count() * minhash_B.count()) ** 0.5
+
+    return cosine_similarity
 
 def average_jaccard_similarity(minhash_list):
     # Compute pairwise Jaccard similarities
     pairwise_similarities = []
     for i in range(len(minhash_list)):
         for j in range(i + 1, len(minhash_list)):
-            similarity = calculate_jaccard_similarity(minhash_list[i], minhash_list[j])
+            similarity = calculate_cosine_similarity(minhash_list[i], minhash_list[j])
             pairwise_similarities.append(similarity)
 
     # Calculate the average similarity
@@ -36,7 +65,7 @@ def read_lines_from_txt(file_path):
 
 def compare_non_ai_to_ai(non_ai_minhash, ai_minhashes, ai_threshold):
     # Compute Jaccard similarity between the non-AI and each AI abstract
-    similarities = [calculate_jaccard_similarity(non_ai_minhash, ai_minhash) for ai_minhash in ai_minhashes]
+    similarities = [calculate_cosine_similarity(non_ai_minhash, ai_minhash) for ai_minhash in ai_minhashes]
 
     # Calculate the average similarity
     average_similarity = sum(similarities) / len(similarities)
@@ -47,13 +76,32 @@ def compare_non_ai_to_ai(non_ai_minhash, ai_minhashes, ai_threshold):
 
 def compare_ai_to_ai(ai_minhash_test, ai_minhashes, ai_threshold):
     # Compute Jaccard similarity between the AI and each AI abstract
-    similarities = [calculate_jaccard_similarity(ai_minhash_test, ai_minhash) for ai_minhash in ai_minhashes]
+    similarities = [calculate_cosine_similarity(ai_minhash_test, ai_minhash) for ai_minhash in ai_minhashes]
 
     average_similarity = sum(similarities) / len(similarities)
     is_similar = average_similarity >= ai_threshold
 
     return is_similar, average_similarity
 
+def compute_minhash_bert_tokenizer(text, num_perm=128, k=3):
+    # Load the BERT tokenizer
+    # tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+
+    # Tokenize text
+    tokens = tokenizer.tokenize(tokenizer.decode(tokenizer.encode(text)))
+
+    # Generate k-token shingles
+    shingles = set()
+    for i in range(len(tokens) - k + 1):
+        shingle = " ".join(tokens[i:i+k])
+        shingles.add(shingle)
+
+    minhash = MinHash(num_perm=num_perm)
+
+    for shingle in shingles:
+        minhash.update(shingle.encode('utf-8'))
+
+    return minhash
 
 def compute_minhash_kshingle(text, num_perm=128, k=5):
     minhash = MinHash(num_perm=num_perm)
@@ -87,13 +135,13 @@ def compute_minhash_wordshingle(text, num_perm=128, k=3):
 
 def preprocess_abstracts_kshingle(abstracts, k=5):
     # Compute MinHash for each abstract using K-shingling
-    return [compute_minhash_wordshingle(abstract, k=k) for abstract in abstracts]
+    return [compute_minhash_bert_tokenizer(abstract, k=k) for abstract in abstracts]
 
 
 def kshingle(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts):
 
     # k_values = [10, 15]
-    k_values = [2, 3, 4, 5, 6, 10]
+    k_values = [3, 4, 5]
 
     y_values_matrix = []
 
@@ -101,7 +149,7 @@ def kshingle(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts):
         ai_minhashes_kshingle = preprocess_abstracts_kshingle(ai_abstracts_train, k=k)
         original_ai_threshold = average_jaccard_similarity(ai_minhashes_kshingle)
 
-        threshold_percentages = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+        threshold_percentages = [0.1, 0.2, 0.3, 0.4, 0.5]
         # threshold_percentages = [0.4, 0.2, 0.1, 0.05, 0.025, 0.005]
 
         x_values_line_graph = []
@@ -117,7 +165,7 @@ def kshingle(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts):
             correct_flags_count_non_ai_kshingle = 0
 
             for non_ai_abstract in non_ai_abstracts:
-                non_ai_minhash_kshingle = compute_minhash_wordshingle(non_ai_abstract, k=k)
+                non_ai_minhash_kshingle = compute_minhash_bert_tokenizer(non_ai_abstract, k=k)
                 is_correct_flag, similarity = compare_non_ai_to_ai(non_ai_minhash_kshingle, ai_minhashes_kshingle, ai_threshold)
                 y_values.append((similarity, False))
 
@@ -132,7 +180,7 @@ def kshingle(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts):
             correct_flags_count_ai_kshingle = 0
 
             for ai_abstract_test in ai_abstracts_test:
-                ai_minhash_test_kshingle = compute_minhash_wordshingle(ai_abstract_test, k=k)
+                ai_minhash_test_kshingle = compute_minhash_bert_tokenizer(ai_abstract_test, k=k)
                 is_correct_flag, similarity = compare_ai_to_ai(ai_minhash_test_kshingle, ai_minhashes_kshingle, ai_threshold)
                 y_values.append((similarity, True))
 
@@ -153,12 +201,12 @@ def kshingle(ai_abstracts_train, ai_abstracts_test, non_ai_abstracts):
 
             print(f"Accuracy: {accuracy}")
             
-            plot_scatter(y_values, ai_threshold, k, accuracy, f'kshingle_word/{k}_word_shingle_tokens_{threshold_percentage}_threshold.png')
+            plot_scatter(y_values, ai_threshold, k, accuracy, f'kshingle_tokenizer_cosine/{k}_shingle_tokenizer_{threshold_percentage}_threshold.png')
 
             y_values_line_graph.append(accuracy * 100)
 
         y_values_matrix.append(y_values_line_graph)
-    plot_line_graph(x_values_line_graph, y_values_matrix, k_values, 'kshingle_word/accuracy_vs_threshold_percentage_word_shingle.png')
+    plot_line_graph(x_values_line_graph, y_values_matrix, k_values, 'kshingle_tokenizer_cosine/accuracy_vs_threshold_percentage_shingle_tokenizer.png')
 
 
 def main():
