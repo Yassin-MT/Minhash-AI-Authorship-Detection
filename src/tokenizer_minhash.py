@@ -7,23 +7,6 @@ from transformers import BertTokenizer
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-# # Load the BERT tokenizer
-# tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-
-# # Tokenize text
-# text = "Hugging Face transformers library is awesome!"
-# tokens = tokenizer.tokenize(tokenizer.decode(tokenizer.encode(text)))
-# print("Tokens:", tokens)
-
-# # Convert tokens to IDs
-# input_ids = tokenizer.encode(text, add_special_tokens=True)
-# print("Input IDs:", input_ids)
-
-# # Decode IDs back to text
-# decoded_text = tokenizer.decode(input_ids)
-# print("Decoded Text:", decoded_text)
-
-
 def calculate_jaccard_similarity(minhash1, minhash2):
     # Compute the Jaccard similarity between two MinHash objects
     return minhash1.jaccard(minhash2)
